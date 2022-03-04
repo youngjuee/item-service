@@ -43,9 +43,50 @@ public class BasicItemController  {
         return "basic/addForm";
 
     }
+//    @PostMapping("/add")
+    public String addItemV1(@RequestParam String itemName,@RequestParam int price, @RequestParam Integer quantity, Model model){
+        Item item =  new Item();
+        item.setItemName(itemName);
+        item.setPrice(price);
+        item.setQuantity(quantity);
+        itemRepository.save(item);
+        model.addAttribute("item", item);
+
+        return "basic/item";
+
+    }
+
+//    @PostMapping("/add")
+    public String addItemV2(@ModelAttribute("item") Item item, Model model){
+        itemRepository.save(item);
+//        자동추가로 생략 가능
+//        model.addAttribute("item", item);
+
+        return "basic/item";
+
+    }
+
+//    @PostMapping("/add")
+    public String addItemV3(@ModelAttribute Item item){
+//      @ModelAttribute 여기에 담기는 "item" 이거는 Item의 앞을 소문자로 바꾼 item이렇게 바뀌게 됨
+        itemRepository.save(item);
+//        자동추가로 생략 가능
+//        model.addAttribute("item", item);
+
+        return "basic/item";
+
+    }
+
     @PostMapping("/add")
-    public String save(){
-        return "basic/addForm";
+    public String addItemV4(Item item){
+//      @ModelAttribute 이걸 빼도 알아서 담김
+        itemRepository.save(item);
+
+        
+//        자동추가로 생략 가능
+//        model.addAttribute("item", item);
+
+        return "basic/item";
 
     }
 
