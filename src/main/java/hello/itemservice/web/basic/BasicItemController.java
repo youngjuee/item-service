@@ -38,6 +38,21 @@ public class BasicItemController  {
 
     }
 
+    @GetMapping("/{itemId}/edit")
+    public String edit(@PathVariable Long itemId, Model model){
+        Item item = itemRepository.findById(itemId);
+        model.addAttribute("item", item);
+        return "basic/editForm";
+
+    }
+
+    @PostMapping("/{itemId}/edit")
+    public String editForm(@PathVariable Long itemId, @ModelAttribute Item item){
+        itemRepository.update(itemId, item);
+        return "redirect:/basic/items/{itemId}";
+
+    }
+
     @GetMapping("/add")
     public String addForm(){
         return "basic/addForm";
@@ -77,7 +92,7 @@ public class BasicItemController  {
 
     }
 
-    @PostMapping("/add")
+//    @PostMapping("/add")
     public String addItemV4(Item item){
 //      @ModelAttribute 이걸 빼도 알아서 담김
         itemRepository.save(item);
@@ -88,6 +103,13 @@ public class BasicItemController  {
 
         return "basic/item";
 
+    }
+
+//  redirect 시키지 않으면 새로고침시 계속 저장된다.
+    @PostMapping("/add")
+    public String addItemV5(Item item){
+        itemRepository.save(item);
+        return "redirect:/basic/items/"+item.getId();
     }
 
 //  테스트용 데이터 추가
